@@ -15,20 +15,34 @@ These instructions will get you a copy of the project up and running on your loc
 ```
 ruby 2.4.1
 Sinatra 1.4.8
+sqlite 3.13.0
 ```
 
 ### Installing
 
-To get a development environment running:
+To initialize development environment:
 
 ```
 git clone https://github.com/tonnamb/sinatra-justdoit.git
 cd sinatra-justdoit
 bundle install --without production
+```
+
+To migrate database: enter console by `irb`
+
+```
+require './main'
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
+DataMapper.auto_migrate!
+```
+
+To have a running server:
+
+```
 bundle exec rackup
 ```
 
-Visit [localhost:3000](http://localhost:3000/) in your browser.
+Visit [localhost:9292](http://localhost:9292/) in your browser.
 
 ## Deployment to Heroku
 
@@ -44,9 +58,19 @@ To deploy to Heroku:
 ```
 heroku login
 heroku create your-unique-app-name
-heroku config:set PUBLISHABLE_KEY=pk_test_your_Stripe_publishable_key SECRET_KEY=sk_test_your_Stripe_secret_key
+heroku config:add BUNDLE_WITHOUT="development:test" --app your-unique-app-name
+heroku addons:add heroku-postgresql:hobby-dev
 git push heroku master
 heroku open
+```
+
+To migrate database on Heroku:
+
+```
+heroku console
+require './main'
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
+DataMapper.auto_migrate!
 ```
 
 To push updates to Heroku:
@@ -57,9 +81,7 @@ git push heroku master
 
 ## Built With
 
-* [Rails](http://rubyonrails.org/) - The web framework used
-* [Stripe](https://rometools.github.io/rome/) - Payments
-* [activeadmin](https://activeadmin.info/) - Administration framework
+* [Sinatra](http://www.sinatrarb.com/) - The web framework used
 
 ## Acknowledgments
 
