@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source :rubygems
 
 gem 'sinatra', '~> 1.4', '>= 1.4.8'
 gem "datamapper", require: "data_mapper"
