@@ -6,3 +6,4 @@ gem "slim"
 gem "sass"
 gem "dm-postgres-adapter", :group => :production
 gem "dm-sqlite-adapter", :group => :development
+gem "pg", :group => :production
